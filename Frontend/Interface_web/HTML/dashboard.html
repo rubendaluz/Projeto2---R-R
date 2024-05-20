@@ -1,0 +1,355 @@
+<!-- 
+Tema:
+SMART-INVENTORY: Desenvolvimento de uma prova de conceito para inventariação automática de bens materiais em organizações.
+
+Resumo:
+O projeto proposto visa desenvolver um sistema de inventariação automática para bens materiais em organizações, recorrendo a tecnologias e técnicas tais como visão por computador ou identificação por radiofrequência. Pretende-se que o sistema seja capaz de identificar, rastrear e gerir os ativos físicos de uma organização de forma eficiente e automatizada, proporcionando maior controlo e precisão no processo de inventariação.
+
+Atividades:
+1) Elaborar o estado da arte em soluções de detecção e rastreio de bens materiais, baseados em tecnologias visão por computador (OpenCV) e radiofrequência (UHF-RFID);
+2) Conceptualização da arquitetura de sistema e identificação de tecnologias tendo em conta o caso de uso em análise;
+3) Desenvolvimento de implementação de uma prova de conceito que permita a identificação do movimento de bens e respetiva inventariação em tempo real;
+4) Avaliação da eficiência e precisão das tecnologias identificadas e utilizadas na prova de conceito.
+5) Preparação e submissão de um artigo técnico-científico em congresso da especialidade."    
+
+Orientação da componente de desenvolvimento de Hardware e Integração com Backend (API):
+ - Sérgio Ivan Lopes (ADiT-Lab/IPVC)
+ - Emanuel Lomba (CiTin, ADiT-Lab/IPVC)
+
+Orientação da componente de desenvolvimento de Software/APP e integração com Frontend:
+ - Sara Paiva (ADiT-Lab/IPVC)
+ - Rolando Azevedo (CiTin)  
+
+ -->
+ 
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Inventory Dashboard</title>
+    <link rel="stylesheet" href="../CSS/styles.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+</head>
+
+
+<body>
+    <div class="left_container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../img/logo.png" alt="Logo">
+                <span class="title">Smart Inventory</span>
+            </div>
+            <ul class="menu">
+                <span class="menu-title">Main Menu</span>
+                <li class="menu_buttons ativo" id="li_dashboard"><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li class="menu_buttons" id="li_users"><a href="users.html"><i class="fas fa-user"></i> utilizadores</a></li>
+                <li class="menu_buttons" id="li_assets"><a href="assets.html"><i class="fas fa-box"></i> Ativos</a></li>
+                <li class="menu_buttons" id="li_movements"><a href="movements.html"><i class="fas fa-exchange-alt"></i> Movimentos</a></li>
+                <li class="menu_buttons" id="li_locations"><a href="locations.html"><i class="fas fa-map marker"></i> Localizações</a></li>
+                <li class="menu_buttons" id="li_reports"><a href="reports.html"><i class="fas fa-chart-line"></i> Relatórios</a></li>
+                <li class="menu_buttons" id="li_notifications"><a href="notifications.html"><i class="fas fa-bell"></i> Notificações</a></li>
+
+            </ul>
+
+                
+
+            <div class="sidebar-footer">
+                <button class="logout-button" id="logout-button">Logout <i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </aside>
+    </div>
+
+    
+    <div class="right_container">
+
+    
+
+
+
+    <header>
+        <div class="header">
+            <h1 class="title"> Dashboard</h1>
+            <div class="user-profile">
+                <div class="right-header-buttons">
+                    <button class="alert-button"><i class="fas fa-bell"></i></button>
+                    <button class="setting-button"><i class="fas fa-cog"></i></button>
+                </div>
+
+                <img class="user-avatar" src="../img/perfil.jpg" alt="User Avatar">
+                <span class="user-name">John Doe</span>
+            </div>
+           
+            
+          
+        </div>
+    </header>
+
+<main>  
+    <section class="welcome-section">
+
+        <h1>Olá, bem-vindo de volta, John Doe</h1>
+        <p>Segunda-feira, 20 de setembro de 2021, 10:30</p>
+
+        <script>
+            const welcomeSection = document.querySelector('.welcome-section');
+            const date = new Date();
+            const days = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+            const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+            const day = days[date.getDay()];
+            const month = months[date.getMonth()];
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+            welcomeSection.querySelector('p').textContent = `${day}, ${date.getDate()} de ${month} de ${date.getFullYear()}, ${hours}:${minutes}`;
+        </script>
+
+
+
+    </section>
+    <section class="cards-section">
+        <div class="card" id="totalUsersCard">
+            <div class="card-icon gradient-bg">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="card-info">
+                <h2>Utilizadores</h2>
+                <p id="totalUsersCount">0</p>
+            </div>
+        </div>
+        <div class="card" id="totalInventoryCard">
+            <div class="card-icon gradient-bg">
+                <i class="fas fa-box"></i>  
+            </div>
+            <div class="card-info">
+                <h2>Inventarios</h2>
+                <p id="totalInventoryCount">0</p>
+            </div>
+        </div>
+        <div class="card" id="totalalerts">
+            <div class="card-icon gradient-bg">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="card-info">
+                <h2>Alertas</h2>
+                <p id="totalAlertsCount">0</p>
+            </div>
+        </div>
+
+        
+    </section>
+    
+    <section class="charts-section">
+        <div class="chart" id="usersChart">
+            <canvas id="usersChartCanvas"></canvas>
+        </div>
+        <div class="chart" id="roomsChart">
+            <canvas id="roomsChartCanvas"></canvas>
+        </div>
+    </section>
+
+
+    <section class="Last-moviment">
+
+        <div class="table_container" id="lastMovementsTable">
+            <div class="table_header">
+                <h1>Ultimos Movimentos</h1>
+                <button id="verMais_button" class="button"> Ver mais</button>
+            </div>
+            
+            <table  class="table_body">
+                <thead>
+                    <tr >
+                        <th>Asset</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Asset 1</td>
+                        <td>Room 1</td>
+                        <td>Room 2</td>
+                        <td>2021-10-01</td>
+                    </tr>
+                    <tr>
+                        <td>Asset 2</td>
+                        <td>Room 2</td>
+                        <td>Room 3</td>
+                        <td>2021-10-02</td>
+                    </tr>
+                    <tr>
+                        <td>Asset 3</td>
+                        <td>Room 3</td>
+                        <td>Room 4</td>
+                        <td>2021-10-03</td>
+                    </tr>
+                    <tr>
+                        <td>Asset 4</td>
+                        <td>Room 4</td>
+                        <td>Room 5</td>
+                        <td>2021-10-04</td>
+                    </tr>
+                    <tr>
+                        <td>Asset 5</td>
+                        <td>Room 5</td>
+                        <td>Room 6</td>
+                        <td>2021-10-05</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <br/>
+
+        </div>
+
+
+
+
+
+    </section>
+
+
+    <footer>
+        <p>Smart Inventory &copy; 2024</p>
+    </footer>
+
+
+    </main>
+    <style>
+
+       
+
+
+       
+
+.welcome-section {
+            margin: 20px;
+        }
+
+        .welcome-section h1 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .welcome-section p {
+            font-size: 18px;
+            color: #7f8c8d;
+        }
+
+
+
+
+        .cards-section {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        
+        .card {
+            display: flex;
+            flex: 1;
+            background-color: #fbfbfb;
+            border-radius: 8px;
+            
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            margin: 10px;
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .card:hover {
+            transform: scale(1.05);
+        }
+        
+        .card-icon {
+            font-size: 40px;
+            color: #ff6600;
+            padding: 20px;
+            text-align: center;
+        }
+        
+       
+        
+        .card-info {
+            padding: 20px;
+        }
+        
+        .card-info h2 {
+            font-size: 18px;
+            color: #3a3a3a;
+            margin-bottom: 10px;
+        }
+        
+        .card-info p {
+            font-size: 24px;
+            color: #000000;
+            font-weight: bold;
+        }
+        
+        .charts-section {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            margin-bottom: 30px;
+        }
+
+        .charts-section {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+        }
+
+        .chart {
+            flex: 1;
+            background-color: #fbfbfb;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            margin: 10px;
+            transition: transform 0.3s ease-in-out;
+
+            background-image: url('../img/chart.png');
+            background-size: cover;
+            background-position: center;
+
+
+        }
+
+        
+
+        .chart:hover {
+            transform: scale(1.05);
+        }
+
+        .chart canvas {
+            width: 100%;
+            height: 100%;
+        }
+      
+          
+        
+
+
+
+
+        
+        </style>
+
+   
+
+</div>
+  
+    
+
+
+</body>
+
+</html>
+
+

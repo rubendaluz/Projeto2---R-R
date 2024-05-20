@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MultiAccess Accesses</title>
+    <link rel="stylesheet" href="../CSS/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+</head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+<body>
+    <div class="left_container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="../img/logo.png" alt="Logo">
+                <span class="title">MultiAccess</span>
+            </div>
+            <ul class="menu">
+                <li class="menu_buttons" id="li_dashboard"><a href="dashboard.html"><i
+                            class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li class="menu_buttons" id="li_admins"><a href="admins.html"><i class="fas fa-users"></i> Admins</a>
+                </li>
+                <li class="menu_buttons" id="li_users"><a href="users.html"><i class="fas fa-user"></i> Users</a></li>
+                <li class="menu_buttons" id="li_rooms"><a href="rooms.html"><i class="fas fa-door-open"></i> Rooms</a>
+                </li>
+                <li class="menu_buttons" id="li_accesses"><a href="accesses.html"><i class="fas fa-fingerprint"></i>
+                    D    Accesses</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button class="settings-button"><i class="fas fa-cog"></i> Settings</button>
+                <button class="logout-button" id="logout-button">Logout <i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </aside>
+    </div>
+
+
+    <div class="right_container">
+
+
+
+
+
+        <header>
+
+            <div class="header">
+                <h1 class="title"> Accesses</h1>
+                <div class="user-profile">
+                    <img class="user-avatar" src="../img/perfil.jpg" alt="User Avatar">
+                    <span class="user-name" id="adminName"></span>
+                </div>
+
+
+
+            </div>
+        </header>
+        <main>
+
+
+            <div class="filter-container">
+                <div class="filter-item ">
+                    <i class="fas fa-sort" onclick="toggleFilter('sortColumn')"></i>
+                    <select id="sortColumn" class="filter-input hidden">
+                        <option value="id">ID</option>
+                        <option value="id_user">User ID</option>
+                        <option value="id_area">Area ID</option>
+                        <option value="data_hora_entrada">Date and Time</option>
+                        <option value="acesso_permitido">Access State</option>
+                        <option value="metodo_auth">Method</option>
+                    </select>
+                </div>
+                <div class="filter-item ">
+                    <i class="fas fa-sort-amount-up" onclick="toggleFilter('sortOrder')"></i>
+                    <select id="sortOrder" class="filter-input hidden">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <i class="fas fa-user" onclick="toggleFilter('userFilter')"></i>
+                    <input type="text" id="userFilter" class="filter-input hidden" placeholder="User ID">
+                </div>
+
+                <div class="filter-item">
+                    <i class="far fa-calendar-alt" onclick="toggleFilter('dateFilter')"></i>
+                    <input type="date" id="dateFilter" class="filter-input hidden" placeholder="Date">
+                </div>
+
+                <div class="filter-item">
+                    <i class="fas fa-fingerprint" onclick="toggleFilter('methodFilter')"></i>
+                    <select id="methodFilter" class="filter-input hidden">
+                        <option value="">All Methods</option>
+                        <option value="NFC">NFC</option>
+                        <option value="FINGER">FINGER</option>
+                    </select>
+                </div>
+
+                <div class="filter-item ">
+                    <i class="fas fa-lock" onclick="toggleFilter('accessStateFilter')"></i>
+                    <select id="accessStateFilter" class="filter-input hidden">
+                        <option value="">All States</option>
+                        <option value="1">Allowed</option>
+                        <option value="0">Not Allowed</option>
+                    </select>
+                </div>
+
+
+
+                <!-- Os filtros adicionais agora têm bordas coloridas para uma aparência mais atraente -->
+                <div class="filter-item ">
+                    <i class="fas fa-map-marker-alt" onclick="toggleFilter('areaFilter')"></i>
+                    <input type="text" id="areaFilter" class="filter-input hidden" placeholder="Area ID">
+                </div>
+
+
+
+
+
+
+                <div class="filter-more">
+                    <button id="showMoreFilters" class="show-more-button">
+                        <i class="fas fa-chevron-down" onclick="showallFilter()"></i>
+                    </button>
+                </div>
+                <button id="btnapplyFilters" class="filter-button">
+                    <i class="fas fa-filter"></i> APLLY FILTERS
+                </button>
+
+            </div>
+            <button id="btnClearFilters" class="filter-button hidden">
+                <i class="fas fa-times-circle"></i> CLEAR FILTERS
+            </button>
+
+
+
+
+
+           <div class="accesses_container">
+                <table id="accesses_table">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>User</th>
+                            <th>Room</th>
+                            <th>Data and Time</th>
+                            <th>Access State</th>
+                            <th>Method used</th>
+                        </tr>
+                    </thead>
+                    <tbody id="accesses_table_body">
+
+                        <!-- Add  more rows as needed -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+<script type="module" src="../JS/accesses.js"></script>
+
+</html>

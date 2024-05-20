@@ -1,0 +1,161 @@
+:root {
+  --background-dark: #081018;
+  --text-white: #ffffff;
+  --bg: var(--background-dark);
+  --logout-btn: #e74c3c;
+  --logout-btn-hover: #c0392b;
+  --sidebar-bg: #000000;
+  --sidebar-gradient-start: #2C3E50;
+  --sidebar-gradient-end: #34495E;
+  --sidebar-shadow: rgba(0, 0, 0, 0.2);
+  --menu-btn-bg: #2C3E50;
+  --borda_hover: #3498db;
+  --settings-btn-hover: #0f1d27;
+  --table_borda: var(--borda_hover);
+  --table_head: var(--borda_hover);
+  --table_hover: #133347;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+}
+h1 {
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--text-white);
+}
+
+
+body {
+  background-color: var(--bg);
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.container {
+  width: 400px;
+  max-width: 400px;
+  margin: 1rem;
+  padding: 2rem;
+  box-shadow: 1px 1px 13px 1px rgba(0, 153, 255, 0.979);
+  border-radius: 4px;
+  background: #212e3b;
+  border: 1px solid var(--borda_hover);
+}
+
+.container,
+.form_input,
+.form_button {
+  font: 500 1rem "Quicksand", sans-serif;
+}
+
+.form > *:first-child {
+  margin-top: 0;
+}
+
+.form > *:last-child {
+  margin-bottom: 0;
+}
+
+.form_title {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.form_input_group {
+  margin-bottom: 1rem;
+}
+
+.from_input {
+  display: block;
+  width: 100%;
+  height: 50px;
+  padding: 0.75rem;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background-color: #192028;
+  border: 1px solid var(--borda_hover);
+  color: var(--text-white);
+}
+
+.from_input:focus {
+  border-color: #00c3ff;
+}
+
+.form_input-error {
+  color: #cc3333;
+  border-color: #cc3333;
+}
+
+.form_input-error-message {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #cc3333;
+}
+
+.form_button {
+  width: 100%;
+  padding: 1rem 1rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border: none;
+  color: var(--text-white);
+  border-radius: 48px;
+  outline: none;
+  cursor: pointer;
+  background: #00b3fa;
+}
+
+.form_button:hover {
+  background: rgb(10, 129, 209);
+}
+
+.form_button:active {
+  transform: scale(0.98);
+}
+
+.form_text {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+
+
+.form_link:hover {
+  text-decoration: underline;
+}
+.form_link {
+
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+
+}
+
+.form_message {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.form_message--success {
+  color: #cc3333;
+}
+
+.form-error {
+  color: #cc3333;
+}
+
+.form_hidden {
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
