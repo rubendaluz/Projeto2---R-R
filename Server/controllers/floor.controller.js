@@ -22,3 +22,16 @@ export const create = async (req, res) => {
         return res.status(500).json({ message: 'Failed to add floor', error });
     }
 }
+
+export const deleteFloor = async (req, res) => {
+  try {
+    const { id } = req.params;
+    // Delete the user
+    await FloorModel.destroy({ where: { id } });
+
+    return res.json({ message: "Floor deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting floor:", error);
+    return res.status(500).json({ message: "Failed to delete floor" });
+  }
+};
