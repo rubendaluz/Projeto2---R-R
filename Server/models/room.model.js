@@ -2,6 +2,12 @@ import { INTEGER, STRING, BOOLEAN, DATE } from "sequelize";
 import { projeto2_db } from "../config/context/database.js";
 import { FloorModel } from "./floor.model.js";
 
+/**
+ * Room Data 
+ * id: INTEGER,
+ * floor_id: INTEGER,
+ * room_name: STRING
+ */
 
 const RoomsModel = projeto2_db.define('Rooms', {
   id: {

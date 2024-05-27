@@ -3,6 +3,14 @@ import { projeto2_db } from "../config/context/database.js";
 import { RoomsModel } from "./room.model.js"
 import {ObjectTypeModel} from "./objectType.model.js"
 
+/**
+ * Objects Data
+ * id: INTEGER,
+ * room_id: INTEGER,
+ * object_type_id: INTEGER,
+ * description: STRING
+ */
+
 
 const ObjectsModel = projeto2_db.define('Objects', {
   id: {
