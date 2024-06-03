@@ -34,8 +34,8 @@ export const register = async (req, res) => {
     });
 
     // Geração e envio do link temporário para mudança de senha
-    const resetToken = createToken(user.id);
-    console.log("resetToken: ", resetToken);
+    const Token = createToken(user.id);
+    console.log("Token: ", Token);
 
 // return just user info esclude password
     return res.json({
