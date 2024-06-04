@@ -3,18 +3,18 @@ import { RoomsModel } from "../models/room.model.js";
 export const create = async (req, res) => {
 
     try {
-        const { floor_id, room_name } = req.body;
+        const { floor, room_name } = req.body;
 
         const existingRoom = await RoomsModel.findOne({ where: { room_name } })
         if (existingRoom) {
             return res.status(409).json({ message: 'Room already exists' });
         }   
 
-        const room = await RoomsModel.create({ floor_id, room_name });
+        const room = await RoomsModel.create({ floor, room_name });
 
         return res.json({
             id: room.id,
-            floor: floor_id,
+            floor: room.floor,
             room_name: room.room_name,
         });
     }catch (error) {
@@ -52,3 +52,4 @@ export const deleteRoom = async (req, res) => {
     return res.status(500).json({ message: "Failed to delete room" });
   }
 };
+

@@ -1,6 +1,6 @@
 import { INTEGER, STRING, BOOLEAN, DATE } from "sequelize";
 import { projeto2_db } from "../config/context/database.js";
-import { FloorModel } from "./floor.model.js";
+
 
 
 const RoomsModel = projeto2_db.define('Rooms', {
@@ -9,7 +9,7 @@ const RoomsModel = projeto2_db.define('Rooms', {
     primaryKey: true,
     autoIncrement: true,
   },
-  floor_id: {
+  floor: {
     type: INTEGER,
     allowNull:false,
   },
@@ -18,8 +18,5 @@ const RoomsModel = projeto2_db.define('Rooms', {
     allowNull: false,
   }
 });
-
-// Establish foreign key relationships
-RoomsModel.belongsTo(FloorModel, { foreignKey: 'floor_id', onDelete: 'CASCADE' });
 
 export { RoomsModel };

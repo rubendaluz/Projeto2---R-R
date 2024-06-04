@@ -55,6 +55,36 @@ export const deleteObject = async (req, res) => {
   }
 };
 
+export const getObject = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Validate id (assuming it should be a positive integer)
+    if (!Number.isInteger(Number(id)) || Number(id) <= 0) {
+      return res.status(400).json({ message: "Invalid ID format" });
+    }
+
+    const object = await ObjectsModel.findByPk(id);
+
+    if (!object) {
+      return res.status(404).json({ message: "Object not found" });
+    }
+
+    return res.json({
+      success: true,
+      data: object
+    });
+  } catch (error) {
+    console.error("Error retrieving object:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to retrieve object",
+      error: error.message
+    });
+  }
+};
+
+
 export const createObjectType = async (req, res) => {
 
     try {
@@ -89,3 +119,4 @@ export const deleteObjectType = async (req, res) => {
     return res.status(500).json({ message: "Failed to delete object type" });
   }
 };
+

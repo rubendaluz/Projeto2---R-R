@@ -29,10 +29,9 @@ const UsersModel = projeto2_db.define('Users', {
   password: {
     type: STRING,
     allowNull: false,
-    unique: true,
   },
   access_level: {
-    type: BOOLEAN,
+    type: STRING,
     allowNull: false,
   }
 });

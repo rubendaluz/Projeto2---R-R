@@ -11,41 +11,43 @@ import jwt from 'jsonwebtoken';
 
 
 export const register = async (req, res) => {
-
   try {
     const { name, email, phone, username, access_level, password } = req.body;
 
-    // Verificar se o email já está em uso
+    // Check if email is already in use
     const existingUser = await UsersModel.findOne({ where: { email } });
-  
     if (existingUser) {
       return res.status(409).json({ message: 'Email already exists' });
+    }
+
+    // Check if any users exist
+    const userCount = await UsersModel.count();
+    let assignedAccessLevel = access_level;
+
+    // If no users exist, assign super admin access level
+    if (userCount === 0) {
+      assignedAccessLevel = 'super_admin'; // Adjust according to your access level naming
     }
 
     const hashedPassword = await encrypt(password);
 
     const user = await UsersModel.create({
-      name,    
+      name,
       email,
       phone,
       username,
-      access_level,
+      access_level: assignedAccessLevel,
       password: hashedPassword,
     });
 
-    // Geração e envio do link temporário para mudança de senha
-    const Token = createToken(user.id);
-    console.log("Token: ", Token);
-
-// return just user info esclude password
+    // Return user info excluding password
     return res.json({
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        accessLevel: user.access_level,   
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      accessLevel: user.access_level,
     });
-
   } catch (error) {
     console.error('Error creating user:', error);
     return res.status(500).json({ message: 'Failed to create user', error });
@@ -121,3 +123,20 @@ const createResetToken = (userId) => {
 };
 
 
+export const getUserProfile = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await UsersModel.findByPk(id, {
+      attributes: { exclude: ["password"] },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.json(user);
+  } catch (error) {
+    console.error("Error retrieving user:", error);
+    return res.status(500).json({ message: "Failed to retrieve user" });
+  }
+};

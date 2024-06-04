@@ -10,6 +10,10 @@ const ObjectsModel = projeto2_db.define('Objects', {
     primaryKey: true,
     autoIncrement: true,
   },
+   name: {
+    type: STRING,
+    allowNull: false,
+  },
   room_id: {
     type: INTEGER,
     allowNull: false,
