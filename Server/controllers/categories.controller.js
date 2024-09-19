@@ -1,6 +1,7 @@
 import { CategoriesModel } from "../models/categories.model";
 import { CategoryGroupModel } from "../models/category_group.model";
 import { UsersModel } from "../models/users.model";
+import { LogsModel } from "../models/logs.js"
 
 export const getAllCategoryGroups = async (req, res) => {
     try {
@@ -22,7 +23,7 @@ export const deleteCategoryGroup = async (req, res) => {
         }
 
         const categoryGroup = await CategoryGroupModel.findOne({ where: { id } });
-        // await LogsModel.create({  description: `${user.name} (${user.id}) deletou o grupo de categoria ${categoryGroup.name} (${categoryGroup.id})`, timeStamps: new Date(), event_type: "delete" });
+        await LogsModel.create({  description: `${user.name} (${user.id}) deletou o grupo de categoria ${categoryGroup.name} (${categoryGroup.id})`, timeStamps: new Date(), event_type: "delete" });
 
         await CategoryGroupModel.destroy({ where: { id } });
 
@@ -59,7 +60,7 @@ export const getCategoryById = async (req, res) => {
         const category = await CategoriesModel.findOne({ where: { id } },
             {
                 include: [
-                    { model: CategoryGroupModel, as: 'categoryGroup' },
+                    { model: CategoriesModel, as: 'categoryGroup' },
                 ],
             }
         );
@@ -87,7 +88,7 @@ export const updateCategory = async (req, res) => {
             return res.status(404).json({ message: 'Sem permissão para atualizar categoria' });
         }
 
-        const category = await CategoryModel.findOne({ where: { id } });
+        const category = await CategoriesModel.findOne({ where: { id } });
 
         if (!category) {
             return res.status(404).json({ message: 'Category not found' });
