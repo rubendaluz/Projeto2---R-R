@@ -15,22 +15,16 @@ const UsersModel = projeto2_db.define('Users', {
   email: {
     type: STRING,
     allowNull: false,
-    unique:true,
     },
   phone: {
       type: STRING,
       allowNull: true,
   },
-  username: {
-    type: STRING,
-    allowNull: false,
-    unique:true,
-    },
   password: {
     type: STRING,
     allowNull: false,
   },
-  access_level: {
+  role: {
     type: STRING,
     allowNull: false,
   }

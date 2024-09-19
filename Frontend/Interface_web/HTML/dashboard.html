@@ -1,39 +1,13 @@
-<!-- 
-Tema:
-SMART-INVENTORY: Desenvolvimento de uma prova de conceito para inventariação automática de bens materiais em organizações.
-
-Resumo:
-O projeto proposto visa desenvolver um sistema de inventariação automática para bens materiais em organizações, recorrendo a tecnologias e técnicas tais como visão por computador ou identificação por radiofrequência. Pretende-se que o sistema seja capaz de identificar, rastrear e gerir os ativos físicos de uma organização de forma eficiente e automatizada, proporcionando maior controlo e precisão no processo de inventariação.
-
-Atividades:
-1) Elaborar o estado da arte em soluções de detecção e rastreio de bens materiais, baseados em tecnologias visão por computador (OpenCV) e radiofrequência (UHF-RFID);
-2) Conceptualização da arquitetura de sistema e identificação de tecnologias tendo em conta o caso de uso em análise;
-3) Desenvolvimento de implementação de uma prova de conceito que permita a identificação do movimento de bens e respetiva inventariação em tempo real;
-4) Avaliação da eficiência e precisão das tecnologias identificadas e utilizadas na prova de conceito.
-5) Preparação e submissão de um artigo técnico-científico em congresso da especialidade."    
-
-Orientação da componente de desenvolvimento de Hardware e Integração com Backend (API):
- - Sérgio Ivan Lopes (ADiT-Lab/IPVC)
- - Emanuel Lomba (CiTin, ADiT-Lab/IPVC)
-
-Orientação da componente de desenvolvimento de Software/APP e integração com Frontend:
- - Sara Paiva (ADiT-Lab/IPVC)
- - Rolando Azevedo (CiTin)  
-
- -->
- 
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Inventory Dashboard</title>
-    <link rel="stylesheet" href="../CSS/styles.css">
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <link rel="stylesheet" href="../CSS/styles.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 </head>
 
 
@@ -47,12 +21,12 @@ Orientação da componente de desenvolvimento de Software/APP e integração com
             <ul class="menu">
                 <span class="menu-title">Main Menu</span>
                 <li class="menu_buttons ativo" id="li_dashboard"><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li class="menu_buttons" id="li_users"><a href="users.html"><i class="fas fa-user"></i> utilizadores</a></li>
+                <li class="menu_buttons" id="li_users"><a href="users.html"><i class="fas fa-user"></i> Utilizadores</a></li>
                 <li class="menu_buttons" id="li_assets"><a href="assets.html"><i class="fas fa-box"></i> Ativos</a></li>
-                <li class="menu_buttons" id="li_movements"><a href="movements.html"><i class="fas fa-exchange-alt"></i> Movimentos</a></li>
-                <li class="menu_buttons" id="li_locations"><a href="locations.html"><i class="fas fa-map marker"></i> Localizações</a></li>
-                <li class="menu_buttons" id="li_reports"><a href="reports.html"><i class="fas fa-chart-line"></i> Relatórios</a></li>
-                <li class="menu_buttons" id="li_notifications"><a href="notifications.html"><i class="fas fa-bell"></i> Notificações</a></li>
+                <li class="menu_buttons" id="li_movements"><a href="detections.html"><i class="fas fa-exchange-alt"></i> Deteções</a></li>
+                <li class="menu_buttons" id="li_locations"><a href="locations.html"><i class="fas fa-map-marker-alt"></i> Localizações</a></li>
+                <!-- <li class="menu_buttons" id="li_reports"><a href="reports.html"><i class="fas fa-chart-line"></i> Relatórios</a></li>
+                <li class="menu_buttons" id="li_notifications"><a href="notifications.html"><i class="fas fa-bell"></i> Notificações</a></li> -->
 
             </ul>
 
@@ -66,11 +40,6 @@ Orientação da componente de desenvolvimento de Software/APP e integração com
 
     
     <div class="right_container">
-
-    
-
-
-
     <header>
         <div class="header">
             <h1 class="title"> Dashboard</h1>
@@ -83,16 +52,13 @@ Orientação da componente de desenvolvimento de Software/APP e integração com
                 <img class="user-avatar" src="../img/perfil.jpg" alt="User Avatar">
                 <span class="user-name">John Doe</span>
             </div>
-           
-            
-          
         </div>
     </header>
 
 <main>  
     <section class="welcome-section">
 
-        <h1>Olá, bem-vindo de volta, John Doe</h1>
+        <h1 id="welcome_msg"></h1>
         <p>Segunda-feira, 20 de setembro de 2021, 10:30</p>
 
         <script>
@@ -117,44 +83,61 @@ Orientação da componente de desenvolvimento de Software/APP e integração com
             </div>
             <div class="card-info">
                 <h2>Utilizadores</h2>
-                <p id="totalUsersCount">0</p>
+                <p id="totalUsersCount"></p>
+                <div id="loading2" class="loading-overlay" style="display: none;">
+                        <div class="spinner"></div>
+                    </div>
             </div>
+            
         </div>
-        <div class="card" id="totalInventoryCard">
+        <div class="card" id="totalAssetsCard">
             <div class="card-icon gradient-bg">
                 <i class="fas fa-box"></i>  
             </div>
             <div class="card-info">
-                <h2>Inventarios</h2>
-                <p id="totalInventoryCount">0</p>
+                <h2>Ativos</h2>
+                <p id="totalAssetsCount"></p>
+                <div id="loading3" class="loading-overlay" style="display: none;">
+                        <div class="spinner"></div>
+                    </div>
             </div>
+            
         </div>
         <div class="card" id="totalalerts">
             <div class="card-icon gradient-bg">
                 <i class="fas fa-exclamation-triangle"></i>
             </div>
             <div class="card-info">
-                <h2>Alertas</h2>
-                <p id="totalAlertsCount">0</p>
+                <h2>Deteções</h2>
+                <p id="totalAlertsCount"></p>
+                <div id="loading4" class="loading-overlay" style="display: none;">
+                        <div class="spinner"></div>
+                    </div>
             </div>
         </div>
 
         
     </section>
-    
-    <section class="charts-section">
-        <div class="chart" id="usersChart">
-            <canvas id="usersChartCanvas"></canvas>
+    <div class="chart-section">
+        <div class="chart-container">
+<!-- Gráfico de Pizza para Distribuição dos Ativos por Salas -->
+        <h2>Distribuição dos Ativos por Salas</h2>
+        <br>
+        <canvas id="roomDistributionChart"></canvas>
         </div>
-        <div class="chart" id="roomsChart">
-            <canvas id="roomsChartCanvas"></canvas>
-        </div>
-    </section>
+        
+        <div class="chart-container"><!-- Gráfico de Pizza para Distribuição dos Ativos por Categorias -->
+        <h2>Distribuição dos Ativos por Categorias</h2>
+        <br>
+        <canvas id="categoryDistributionChart"></canvas>
+    </div>
+        
+    </div>
 
 
     <section class="Last-moviment">
 
-        <div class="table_container" id="lastMovementsTable">
+        <div class="table_container" id="lastDetectionsTable">
             <div class="table_header">
                 <h1>Ultimos Movimentos</h1>
                 <button id="verMais_button" class="button"> Ver mais</button>
@@ -162,49 +145,21 @@ Orientação da componente de desenvolvimento de Software/APP e integração com
             
             <table  class="table_body">
                 <thead>
-                    <tr >
-                        <th>Asset</th>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Asset 1</td>
-                        <td>Room 1</td>
-                        <td>Room 2</td>
-                        <td>2021-10-01</td>
-                    </tr>
-                    <tr>
-                        <td>Asset 2</td>
-                        <td>Room 2</td>
-                        <td>Room 3</td>
-                        <td>2021-10-02</td>
-                    </tr>
-                    <tr>
-                        <td>Asset 3</td>
-                        <td>Room 3</td>
-                        <td>Room 4</td>
-                        <td>2021-10-03</td>
-                    </tr>
-                    <tr>
-                        <td>Asset 4</td>
-                        <td>Room 4</td>
-                        <td>Room 5</td>
-                        <td>2021-10-04</td>
-                    </tr>
-                    <tr>
-                        <td>Asset 5</td>
-                        <td>Room 5</td>
-                        <td>Room 6</td>
-                        <td>2021-10-05</td>
-                    </tr>
+                            <tr>
+                                <th>Id</th>
+                                <th>Objeto</th>
+                                <th>Tag UHF</th>
+                                <th>Localização anterior</th>
+                                <th>Localização atual</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                <tbody id="last_detections_table_body">
                 </tbody>
             </table>
-
-            <br/>
-
+            <div id="loading" class="loading-overlay" style="display: none;">
+                <div class="spinner"></div>
+            </div>
         </div>
 
 
@@ -347,6 +302,7 @@ Orientação da componente de desenvolvimento de Software/APP e integração com
   
     
 
+<script type="module" src="../JS/dash.js"></script>
 
 </body>
 

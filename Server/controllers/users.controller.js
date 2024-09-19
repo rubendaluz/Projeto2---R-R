@@ -12,7 +12,7 @@ import jwt from 'jsonwebtoken';
 
 export const register = async (req, res) => {
   try {
-    const { name, email, phone, username, access_level, password } = req.body;
+    const { name, email, phone, username, role, password } = req.body;
 
     // Check if email is already in use
     const existingUser = await UsersModel.findOne({ where: { email } });
@@ -22,21 +22,21 @@ export const register = async (req, res) => {
 
     // Check if any users exist
     const userCount = await UsersModel.count();
-    let assignedAccessLevel = access_level;
+    let assignedAccessLevel = role;
 
     // If no users exist, assign super admin access level
     if (userCount === 0) {
       assignedAccessLevel = 'super_admin'; // Adjust according to your access level naming
     }
 
-    const hashedPassword = await encrypt(password);
+    const hashedPassword = encrypt(password);
 
     const user = await UsersModel.create({
       name,
       email,
       phone,
       username,
-      access_level: assignedAccessLevel,
+      role: assignedAccessLevel,
       password: hashedPassword,
     });
 
@@ -46,7 +46,7 @@ export const register = async (req, res) => {
       name: user.name,
       email: user.email,
       phone: user.phone,
-      accessLevel: user.access_level,
+      role: user.role,
     });
   } catch (error) {
     console.error('Error creating user:', error);
@@ -85,6 +85,27 @@ export const login = async (req, res) => {
   user.password = undefined;
   return res.json({ user, token });
 };
+
+export const editUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name,
+      email,
+      phone,
+      username,
+      role} = req.body;
+
+    await UsersModel.update({name,
+      email,
+      phone,
+      username,
+      role}, { where: { id } });
+    return res.json({ message: "User updated successfully" });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return res.status(500).json({ message: "Failed to update user"});
+  }
+}
 
 export const deleteUser = async (req, res) => {
   try {
@@ -138,5 +159,29 @@ export const getUserProfile = async (req, res) => {
   } catch (error) {
     console.error("Error retrieving user:", error);
     return res.status(500).json({ message: "Failed to retrieve user" });
+  }
+};
+
+export const searchUser = async (req, res) => {
+  try {
+    const { search } = req.params;
+
+    const users = await UsersModel.findAll({
+      where: {
+        [Op.or]: [
+          { name: { [Op.like]: `%${search}%` } },
+          { email: { [Op.like]: `%${search}%` } },
+          { phone: { [Op.like]: `%${search}%` } },
+          { username: { [Op.like]: `%${search}%` } },
+        ],
+      },
+      attributes: { exclude: ["password"] },
+    },
+    { include: [{ model: LocationModel, as: 'location' }] });
+
+    return res.json(users);
+  } catch (error) {
+    console.error("Error searching users:", error);
+    return res.status(500).json({ message: "Failed to search users" });
   }
 };

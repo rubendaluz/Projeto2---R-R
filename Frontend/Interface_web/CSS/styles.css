@@ -8,8 +8,6 @@
   --sidebar-gradient-end: #34495E;
   --sidebar-shadow: rgba(0, 0, 0, 0.2);
   --menu-btn-hover: #ffffff13;
-
-  
 }
 
 * {
@@ -406,8 +404,162 @@ table {
   
 }
 
- 
+table, th, tr, td {
+  text-align: center;
+  margin: auto;
+}
 
  
+/* Formulários */
+ 
+.form-container{
+  display: none;
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-30%, -50%);
+  border-collapse: collapse;
+  margin-top: 20px;
+  color: black;
+  z-index: 99;
+  background-color:#ccc;
+  padding: 30px;
+}
 
+.form-container input {
+  height: 30px;
+}
+
+.form-container button{
+  width: 150px;
+  height: 35px;
+  background-color: #e74c3c;
+  color: white;
+  outline: none;
+  border: none;
+  margin: 10px auto;
+  border-radius: 10px;
+}
+#assetForm,#roomForm,#userForm{
+  display: flex;
+  flex-direction: column;
+}
+
+.close-btn {
+  background-color: none;
+  border: none;
+  cursor: pointer;
+}
+
+.form_top{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* Animações */
+.loading-overlay {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Delete forms */
+.delete_form{
+  z-index: 99;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-30%, -50%);
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow:2px 2px 2px 1px rgba(0, 0, 0, 0.2) ;
+  border: 1px solid black;
+}
+
+.delete_form_buttons{
+  margin-top: 15px;
+}
+.delete_form_buttons button{
+  padding: 7px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+}
+
+#cancel_btn{
+  background-color: red;
+  cursor: pointer;
+}
+#confirm_btn{
+  background-color: green;
+  cursor: pointer;
+}
+
+#delete_room_form{
+  display: none;
+}
+#delete_user_form{
+  display: none;
+}
+#delete_asset_form{
+  display: none;
+}
+
+.hide{
+  display: none;
+}
+
+.chart-section {
+    width: 100%;
+    margin: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.chart-container{
+    width: 100%;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Definindo estilo para os elementos do canvas */
+canvas {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajuste dos tamanhos dos gráficos */
+#roomDistributionChart, #categoryDistributionChart {
+    width: 80% !important;
+    height: auto !important;
+}
 

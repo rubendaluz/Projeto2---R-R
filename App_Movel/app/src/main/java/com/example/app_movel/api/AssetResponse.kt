@@ -1,4 +1,6 @@
 package com.example.app_movel.api
 
-class AssetResponse {
-}
+data class AssetResponse(
+    val success: Boolean,
+    val message: String
+)

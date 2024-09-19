@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">App_Movel</string>
+    <string name="welcome_to_multiaccess">Welcome to Smart Inventory</string>
+    <string name="resposta_login"></string>
+</resources>

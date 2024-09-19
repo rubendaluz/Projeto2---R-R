@@ -1,67 +1,89 @@
-import {ip} from './config/config.js';
+import { ip } from './config/config.js';
+import { showLoading, hideLoading, showLoading2, showLoading3, showLoading4, hideLoading2, hideLoading3, hideLoading4 } from './animations.js';
 
 const totalUsersCountElement = document.getElementById("totalUsersCount");
-const totalAdminsCountElement = document.getElementById("totalAdminsCount");
-const totalRoomsCountElement = document.getElementById("totalRoomsCount");
+const totalAssetsCountElement = document.getElementById("totalAssetsCount");
+const totalAlertsCountElement = document.getElementById("totalAlertsCount");
 
 
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const token = localStorage.getItem("token");
     if (!token) {
         window.location.href = "../HTML/login.html";
     }
-    const userNameElement = document.querySelector(".user-name");
     const user = JSON.parse(localStorage.getItem("user"));
-  
+
+    const userNameElement = document.querySelector(".user-name");
+    const welcomeMSG = document.querySelector("#welcome_msg");
+    
+    console.log(user.name)
     // user exist
     if (user) {
-        userNameElement.textContent = user.username;
+        userNameElement.textContent = user.name;
+        welcomeMSG.textContent = `Olá, bem-vindo de volta, ${user.name}`
     } else {
         window.location.href = "../HTML/login.html";
     }
     const totalUsersCard = document.getElementById("totalUsersCard");
-    const totalAdminsCard = document.getElementById("totalAdminsCard");
-    const totalRoomsCard = document.getElementById("totalRoomsCard");
+    const totalAssetsCard = document.getElementById("totalAssetsCard");
+    const totalAlertsCard = document.getElementById("totalalerts");
 
     totalUsersCard.addEventListener("click", function () {
         // Open the page for total users
         window.location.href = "users.html";
     });
 
-    totalAdminsCard.addEventListener("click", function () {
-        // Open the page for total admins
-        window.location.href = "admins.html";
+    totalAssetsCard.addEventListener("click", function () {
+        // Open the page for total assets
+        window.location.href = "assets.html";
     });
-
-    totalRoomsCard.addEventListener("click", function () {
-        // Open the page for total rooms
-        window.location.href = "rooms.html";
+    totalAlertsCard.addEventListener("click", function () {
+        // Open the page for total assets
+        window.location.href = "detections.html";
     });
-
-
-    
-
     fetchStatistics()
-     
-    getRecentAccesses();
-        getRecentAccesses();
+    getRecentDetections()
+
+    // Dados para o gráfico de pizza - Distribuição dos Ativos por Salas
+    const roomChartCtx = document.getElementById('roomDistributionChart').getContext('2d');
+    try {
+        const roomChartResponse = await fetch(`http://${ip}:4242/api/statistics/room-distribution`);
+        const roomChartData = await roomChartResponse.json();
+        createChart(roomChartCtx, roomChartData, 'Distribuição por Salas');
+    } catch (error) {
+        console.error('Error fetching room distribution data:', error);
+    }
+
+    // Dados para o gráfico de pizza - Distribuição dos Ativos por Categorias
+    const categoryChartCtx = document.getElementById('categoryDistributionChart').getContext('2d');
+    try {
+        const categoryChartResponse = await fetch(`http://${ip}:4242/api/statistics/category-distribution`);
+        const categoryChartData = await categoryChartResponse.json();
+        createChart(categoryChartCtx, categoryChartData, 'Distribuição por Categorias');
+    } catch (error) {
+        console.error('Error fetching category distribution data:', error);
+    }
 });
 
 
 function fetchStatistics() {
-   
     // Use a rota configurada no seu servidor
+
     const apiUrl = `http://${ip}:4242/api/statistics`;
+    showLoading2();
+    showLoading3();
+    showLoading4();
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
             // Atualize os elementos HTML com os dados recebidos
             totalUsersCountElement.textContent = data.usersCount;
-            totalAdminsCountElement.textContent = data.adminsCount;
-            totalRoomsCountElement.textContent = data.roomsCount;
-            updateAccessStatePieChart(data.allowedAccessesCount, data.deniedAccessesCount);
-            updateMethodUsedPieChart( data.fingerprintAccessesCount,data.nfcAccessesCount);
+            totalAssetsCountElement.textContent = data.assetsCount;
+            totalAlertsCountElement.textContent = data.detectionsCount;
+            hideLoading2();
+            hideLoading3();
+            hideLoading4();
         })
         .catch(error => console.error("Error fetching data:", error));
 }
@@ -75,137 +97,109 @@ logoutButton.addEventListener("click", () => {
 
 });
 
-  
-   
+function add_detection_to_table (id, object_name, object_tag, old_room_id,new_room_id, timestamp)  {
+    const table_body = document.querySelector("#last_detections_table_body");
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-let getRecentAccesses = () => {
-    const url = `http://${ip}:4242/api/acesses/recent`;
-
-    
-
-    fetch(url)
-    .then(response => {
-        if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json(); 
-    })
-    .then(accesses => {
-        console.log(accesses);
-        accesses.forEach(access => {
-            add_access_table(access["id"],access["id_user"],access["id_area"],formatarData(access["data_hora_entrada"]), access["acesso_permitido"], access["metodo_auth"])
-        });
-    })
-    .catch(error => {
-        console.error(`Error: ${error.message}`);
-    });
-}
-const acesses_table = document.querySelector("#accesses_table_body");
-let add_access_table = (id, user_id, room_id, datetime, allowed, method) => {
-    let allow;
-    let color;
-    if (allowed) {
-        allow = "Allowed";
-        color = "green"
-    } else {
-        allow = "Not Allowed"
-        color = "red"
-    }
-    acesses_table.innerHTML += `
+    table_body.innerHTML += `
         <tr>
             <td>${id}</td>
-            <td>${user_id}</td>
-            <td>${room_id}</td>
-            <td>${datetime}</td>
-            <td style="background-color: ${color}; 
-                color:white;">${allow}</td>
-            <td>${method}</td>
+            <td>${object_name}</td>
+            <td>${object_tag}</td>
+            <td>${old_room_id}</td>
+            <td>${new_room_id}</td>
+            <td>${timestamp}</td>
         </tr>
     `
 }
 
+function getRecentDetections () {
+    // const baseUrl = `http://${ip}:4242/api/detections/recent`;
+    const baseUrl = `https://0479-2-83-109-238.ngrok-free.app/api/detections/recent`;
+    const url = new URL(baseUrl);
+    showLoading();
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(objects => {
 
-function formatarData(dataOriginal) { 
-
-    // Criar um objeto Date a partir da string original
-    const data = new Date(dataOriginal);
-    
-    // Obter os componentes da data
-        const dia = data.getDate();
-        const mes = data.getMonth() + 1; // Adicionar 1 porque os meses começam do zero
-        const ano = data.getFullYear();
-        const horas = data.getHours();
-        const minutos = data.getMinutes();
-    
-        // Formatar os componentes da data e hora como desejado
-        const dataFormatada = `${dia < 10 ? '0' : ''}${dia}-${mes < 10 ? '0' : ''}${mes}-${ano}`;
-        const horaFormatada = `${horas < 10 ? '0' : ''}${horas}:${minutos < 10 ? '0' : ''}${minutos}`;
-    
-        // Resultado final
-        const resultadoFinal = `${dataFormatada}/${horaFormatada}`;
-        return resultadoFinal
-    }
-
-
-
-    
-
-    function updateAccessStatePieChart(allowedCount, deniedCount) {
-        const accessStateData = {
-            labels: ['Allowed', 'Not Allowed'],
-            datasets: [{
-                data: [allowedCount, deniedCount], 
-                backgroundColor: ['#4CAF50', '#FF5733'],
-                
-            }],
-        };
-
-        const accessStateChart = new Chart(document.getElementById('accessStateChart').getContext('2d'), {
-            type: 'pie',
-            data: accessStateData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                legend: {
-                    position: 'bottom',
-                },
-            },
+            
+            if (objects && objects.length > 0) {
+                objects.forEach(object => {
+                    let timestampFormatado = formatarTimestamp(object.timestamp);
+                    add_detection_to_table(object.id, object.object.name, object.object.uhfTag, object.old_room.room_name, object.new_room.room_name, timestampFormatado);
+                    hideLoading();
+                });
+            } else {
+                console.log("Nenhum ativo encontrado na resposta da API.");
+                hideLoading();
+            }
+        })
+        .catch(error => {
+            console.error(`Erro ao obter ativos: ${error.message}`);
         });
+}
 
-        
-    }
+function formatarTimestamp(timestamp) {
+    const date = new Date(timestamp);
+          const options = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+            timeZone: 'UTC'
+          };
+    const formattedTimestamp = new Intl.DateTimeFormat('pt-BR', options).format(date);
+    return formattedTimestamp;
+}
 
-    function updateMethodUsedPieChart(finger,nfc) {
-        const methodUsedData = {
-            labels: ['Fingerprint', 'NFC'], // Add other methods as needed
-            datasets: [{
-                data: [finger, nfc], // Replace with actual percentages
-                backgroundColor: ['#3498db', '#fbff01'],
-            }],
-        };
-
-       const methodUsedChart = new Chart(document.getElementById('methodUsedChart').getContext('2d'), {
+// Função para criar gráfico
+    function createChart(ctx, chartData, chartLabel) {
+        return new Chart(ctx, {
             type: 'pie',
-            data: methodUsedData,
+            data: {
+                labels: chartData.labels, // Rótulos
+                datasets: [{
+                    label: chartLabel,
+                    data: chartData.values, // Valores
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
-                legend: {
-                    position: 'bottom',
-                },
-            },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return `${tooltipItem.label}: ${tooltipItem.raw} ativos`;
+                            }
+                        }
+                    }
+                }
+            }
         });
     }

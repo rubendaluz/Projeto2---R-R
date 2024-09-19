@@ -1,7 +1,7 @@
 import { INTEGER, STRING, BOOLEAN, DATE } from "sequelize";
 import { projeto2_db } from "../config/context/database.js";
-import { RoomsModel } from "./room.model.js"
-import {ObjectTypeModel} from "./objectType.model.js"
+import { LocationsModel} from "./locations.model.js"
+import {CategoriesModel} from "./categories.model.js"
 
 
 const ObjectsModel = projeto2_db.define('Objects', {
@@ -14,13 +14,17 @@ const ObjectsModel = projeto2_db.define('Objects', {
     type: STRING,
     allowNull: false,
   },
-  room_id: {
+  location_id: {
     type: INTEGER,
     allowNull: false,
   },
-  object_type_id: {
+  category_id: {
     type: INTEGER,
     allowNull: false,
+  },
+  uhfTag: {
+    type: STRING,
+    allowNull: true,
   },
   description: {
     type: STRING,
@@ -29,7 +33,7 @@ const ObjectsModel = projeto2_db.define('Objects', {
 });
 
 // Establish foreign key relationships
-ObjectsModel.belongsTo(RoomsModel, { foreignKey: 'room_id', onDelete: 'CASCADE' });
-ObjectsModel.belongsTo(ObjectTypeModel, { foreignKey: 'object_type_id', onDelete: 'CASCADE' });
+ObjectsModel.belongsTo(LocationsModel, { foreignKey: 'location_id', as: 'location', onDelete: 'CASCADE' });
+ObjectsModel.belongsTo(CategoriesModel, { foreignKey: 'category_id', as: 'category', onDelete: 'CASCADE' });
 
 export { ObjectsModel };

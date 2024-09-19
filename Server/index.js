@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import "dotenv/config";
+import './utils/mqttListener.js';
 
 
 // SERVER ROUTES
@@ -32,6 +33,11 @@ server.use(express.static('public'));
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
+// Middleware para logging detalhado
+server.use((req, res, next) => {
+  console.log(`Recebida requisição: ${req.method} ${req.url}`);
+  next();
+});
 
 server.use("/api", api);
 

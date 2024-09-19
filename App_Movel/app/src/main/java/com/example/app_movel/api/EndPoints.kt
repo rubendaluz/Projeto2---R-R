@@ -1,13 +1,16 @@
-package com.example.aplicacaomovel.api
+package com.example.app_movel.api
 
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.Headers
+import retrofit2.http.POST
+
 interface EndPoints {
 
     @Headers("Content-Type: application/json")
-    @POST("user/userlogin")
+    @POST("user/login")
     fun loginUser(@Body loginRequest: LoginRequest): Call<LoginResponse>
 
-    @GET("acesses/user/{userId}")
-    fun getAccessesByUser(@Path("userId") userId: Int): Call<List<Access>>
+    @POST("objects/create")
+    fun addAsset(@Body asset: Asset): Call<AssetResponse>
 }

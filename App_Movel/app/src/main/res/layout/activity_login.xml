@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/fundo_gradiente"
+        android:src="@color/background"
         android:scaleType="centerCrop"/>
 
     <RelativeLayout
@@ -18,12 +18,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="380dp"
+        android:layout_marginTop="280dp"
         android:layout_marginHorizontal="40dp">
 
 
         <TextView
-            android:background="#0a1f2f"
+
             android:id="@+id/loginFormText"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
@@ -31,8 +31,8 @@
             android:layout_marginTop="0dp"
             android:layout_marginBottom="10dp"
             android:text="@string/welcome_to_multiaccess"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -68,7 +68,7 @@
                 android:layout_height="30dp"
                 android:src="@drawable/email_icon"
                 android:layout_marginEnd="8dp"
-                android:tint="@color/fundo_cartao"/>
+                android:tint="@color/btn"/>
 
             <EditText
                 android:id="@+id/input_email"
@@ -77,9 +77,9 @@
                 android:layout_height="match_parent"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:textColorHint="@color/white"
+                android:textColorHint="@color/black"
                 android:hint="Enter your email"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                 android:background="@android:color/transparent"
 
                 android:textSize="18sp"/>
@@ -105,7 +105,7 @@
                 android:src="@drawable/lock_icon"
                 android:layout_marginEnd="8dp"
                 app:tint="@android:color/black"
-                android:tint="@color/fundo_cartao"/>
+                android:tint="@color/btn"/>
 
             <EditText
                 android:id="@+id/input_password"
@@ -114,9 +114,9 @@
                 android:layout_height="match_parent"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:textColorHint="@color/white"
+                android:textColorHint="@color/black"
                 android:hint="Enter your password"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:background="@android:color/transparent"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
@@ -133,7 +133,7 @@
             android:id="@+id/btnLogin"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:backgroundTint="@android:color/holo_blue_light"
+            android:backgroundTint="@color/btn"
             android:textSize="20sp"
             android:layout_gravity="center"
             android:onClick="login"
@@ -157,7 +157,7 @@
         android:layout_height="210dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="80dp">
+        android:layout_marginTop="0dp">
 
         <ImageView
             android:id="@+id/logo"
@@ -169,9 +169,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MultiAccess"
+            android:text="Smart Inventory"
             android:textSize="28sp"
-            android:textColor="@android:color/holo_blue_light"
+            android:textColor="@android:color/holo_orange_dark"
             android:layout_centerHorizontal="true"
             android:fontFamily="sans-serif"
             android:textAllCaps="true"

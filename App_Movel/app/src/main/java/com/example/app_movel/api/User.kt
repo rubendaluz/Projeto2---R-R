@@ -1,4 +1,4 @@
-package com.example.aplicacaomovel.api
+package com.example.app_movel.api
 
 data class User(
     val id: Int,

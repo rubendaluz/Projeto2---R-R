@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ativos - Smart Inventory Dashboard</title>
     <link rel="stylesheet" href="../CSS/styles.css">
+    
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -24,12 +25,12 @@
             <ul class="menu">
                 <span class="menu-title">Main Menu</span>
                 <li class="menu_buttons " id="li_dashboard"><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li class="menu_buttons" id="li_users"><a href="users.html"><i class="fas fa-user"></i> utilizadores</a></li>
+                <li class="menu_buttons" id="li_users"><a href="users.html"><i class="fas fa-user"></i> Utilizadores</a></li>
                 <li class="menu_buttons ativo" id="li_assets"><a href="assets.html"><i class="fas fa-box"></i> Ativos</a></li>
-                <li class="menu_buttons" id="li_movements"><a href="movements.html"><i class="fas fa-exchange-alt"></i> Movimentos</a></li>
-                <li class="menu_buttons" id="li_locations"><a href="locations.html"><i class="fas fa-map marker"></i> Localizações</a></li>
-                <li class="menu_buttons" id="li_reports"><a href="reports.html"><i class="fas fa-chart-line"></i> Relatórios</a></li>
-                <li class="menu_buttons" id="li_notifications"><a href="notifications.html"><i class="fas fa-bell"></i> Notificações</a></li>
+                <li class="menu_buttons" id="li_movements"><a href="detections.html"><i class="fas fa-exchange-alt"></i> Deteções</a></li>
+                <li class="menu_buttons" id="li_locations"><a href="locations.html"><i class="fas fa-map-marker-alt"></i> Localizações</a></li>
+                <!-- <li class="menu_buttons" id="li_reports"><a href="reports.html"><i class="fas fa-chart-line"></i> Relatórios</a></li>
+                <li class="menu_buttons" id="li_notifications"><a href="notifications.html"><i class="fas fa-bell"></i> Notificações</a></li> -->
 
             </ul>
 
@@ -58,18 +59,13 @@
                 <img class="user-avatar" src="../img/perfil.jpg" alt="User Avatar">
                 <span class="user-name">John Doe</span>
             </div>
-           
-            
-          
         </div>
     </header>
 
 <main>
- 
 
     <section class="welcome-section">
-
-        <h1>Olá, bem-vindo de volta, John Doe</h1>
+        <h1 id="welcome_msg">Olá, bem-vindo de volta, John Doe</h1>
         <p>Segunda-feira, 20 de setembro de 2021, 10:30</p>
 
         <script>
@@ -83,22 +79,12 @@
             const minutes = date.getMinutes();
             welcomeSection.querySelector('p').textContent = `${day}, ${date.getDate()} de ${month} de ${date.getFullYear()}, ${hours}:${minutes}`;
         </script>
-
-
-
     </section>
-
-
-
-
-
         <main>
-           
-          
             <div class="table_container">
                 <div class="table_header">
                     <h1>Ativos</h1>
-                    <button id="create_asset_button" class="button">Criar Ativo</button>
+                    <button id="create_asset_button" class="button">Registar Ativo</button>
                 </div>
                 <div class="container">
                     <div class="search">
@@ -111,101 +97,61 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Nome</th>
-                                <th>Serial</th>
+                                <th>Tag UHF</th>
                                 <th>Categoria</th>
                                 <th>Localização</th>
                                 <th>Acções</th>
-
-    
                             </tr>
                         </thead>
                         <tbody id="assets_table_body">
-                            <tr>
-                                <td>1</td>
-                                <td>Monitor</td>
-                                <td>123456</td>
-                                <td>Electronicos</td>
-                                <td>Room 1</td>
-                                <td class="action-icons">
-                                    <a href="#" title="Edit"><i class="fas fa-edit edit_asset_btn"></i></a>
-                                    <a href="#" title="Delete"><i class="fas fa-trash-alt delete_asset_btn"></i></a>
-                                </td>
-                            </tr>
-colocar uns 10 ativos
-                            <tr>
-                                <td>2</td>
-                                <td>Teclado</td>
-                                <td>123456</td>
-                                <td>Electronicos</td>
-                                <td>Room 1</td>
-                                <td class="action-icons">
-                                    <a href="#" title="Edit"><i class="fas fa-edit edit_asset_btn"></i></a>
-                                    <a href="#" title="Delete"><i class="fas fa-trash-alt delete_asset_btn"></i></a>    
-                                </td>
-                            </tr>   
-
-                            <tr>
-                                <td>3</td>
-                                <td>Rato</td>
-                                <td>123456</td>
-                                <td>Electronicos</td>
-                                <td>Room 1</td>
-                                <td class="action-icons">
-                                    <a href="#" title="Edit"><i class="fas fa-edit edit_asset_btn"></i></a>
-                                    <a href="#" title="Delete"><i class="fas fa-trash-alt delete_asset_btn"></i></a>    
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>4</td>
-                                <td>Cadeira</td>
-                                <td>123456</td>
-                                <td>Mobiliario</td>
-                                <td>Room 1</td>
-                                <td class="action-icons">
-                                    <a href="#" title="Edit"><i class="fas fa-edit edit_asset_btn"></i></a>
-                                    <a href="#" title="Delete"><i class="fas fa-trash-alt delete_asset_btn"></i></a>
-                                </td>
-
-                            </tr>
-
-                            <tr>
-                                <td>5</td>
-                                <td>Mesa</td>
-                                <td>123456</td>
-                                <td>Mobiliario</td>
-                                <td>Room 1</td>
-                                <td class="action-icons">
-                                    <a href="#" title="Edit"><i class="fas fa-edit edit_asset_btn"></i></a>
-                                    <a href="#" title="Delete"><i class="fas fa-trash-alt delete_asset_btn"></i></a>
-                                </td>
-
-                            </tr>
-
-
-
-
-
-
-
-
-
-                            
-
                         </tbody>
                     </table>
+                    <div id="loading" class="loading-overlay" style="display: none;">
+                        <div class="spinner"></div>
+                    </div>
                 </div>
 
             </div>
+            <div class="form-container">
+                <div class="form_top">
+                    <h1 class="form_title">Adicionar Ativo</h1>
+                    <i class="fas fa-times close-btn" id="close_asset_form_btn"></i>
+                </div>
+            <form id="assetForm" >
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" required>
 
+                <label for="sala">Sala:</label>
+                <select id="sala" name="sala" required>
+                    <option value="">Selecione uma sala</option>
+                </select>
 
+                <label for="tipoObjeto">Tipo de Objeto:</label>
+                <select id="tipoObjeto" name="tipoObjeto" required>
+                    <option value="">Selecione um tipo de objeto</option>
+                </select>
+
+                <label for="descricao">Descrição:</label>
+                <textarea id="descricao" name="descricao" rows="4" required></textarea>
+
+                <label for="uhfTag">Tag UHF:</label>
+                <input type="text" id="uhfTag" name="uhfTag" readonly>
+                <button type="button" id="btn_read_uhf">Ler Tag UHF</button>
+                <p id="statusMessage"></p>
+
+                <button type="submit" class="hide" id="create_asset_submit">Criar</button>
+                <button type="submit" class="hide" id="edit_asset_submit">Editar</button>
+            </form>
         </main>
-
     </div>
 
+   <div class="delete_form" id="delete_asset_form">
+        <p>Are you sure you want to delete this room?</p>
+        <div class="delete_form_buttons">
+            <button id="cancel_btn">Cancel</button>
+            <button id="confirm_btn">Confirm</button>
+        </div>
+    </div> 
 </body>
-<script type="module" src="../JS/asset.js"></script>
-
-
-
+<script type="module" src="../JS/assets.js"></script>
 </html>
